@@ -26,7 +26,6 @@
     "production": "node ./build/index.js",
     "test": "jest"
   },
-  "packageManager": "yarn@4.4.0",
   "engines": {
     "node": "16.x"
   }
