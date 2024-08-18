@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import * as yup from 'yup'
 import { validation } from "../../shared/middlewares/validation"
 import { StatusCodes } from "http-status-codes"
+import { CidadesProvider } from "../../database/providers/cidade"
 
 interface IParams{
     id?: number
@@ -14,15 +15,23 @@ export const getByIdValidation = validation((getSchema) => ({
 }))
 
 export const getById = async (req: Request<IParams>, res: Response) => { 
-    console.log(req.params) 
-    if(Number(req.params.id) == 9999) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        errors: {
-            "default": "Registro não encontrado!"
-        }
-    })
+    if(!req.params.id) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            errors: {
+                "default": "O parâmetro 'id' precisa ser informado!"
+            }
+        })
+    }
 
-    return res.status(StatusCodes.OK).json({
-        id: req.params.id,
-        nome: 'Rio de Janeiro'
-    })
+    const result = await CidadesProvider.getId(req.params.id)
+
+    if(result instanceof Error){
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
+
+    return res.status(StatusCodes.OK).json(result)
 }

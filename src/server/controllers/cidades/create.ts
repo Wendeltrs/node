@@ -13,7 +13,7 @@ export const createValidation = validation((getSchema) => ({
     }))
 }))
 
-export const create = async (req: Request<{}, {}, ICidade>, res: Response) => { //Criando o controller de cidades
+export const create = async (req: Request<{}, {}, IBody>, res: Response) => { //Criando o controller de cidades
     const result = await CidadesProvider.create(req.body) //req.body: Pega os dados passados no body do front-end
 
     if(result instanceof Error){

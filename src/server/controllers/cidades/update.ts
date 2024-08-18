@@ -3,6 +3,7 @@ import * as yup from 'yup'
 import { validation } from "../../shared/middlewares/validation"
 import { StatusCodes } from "http-status-codes"
 import { ICidade } from "../../database/models"
+import { CidadesProvider } from "../../database/providers/cidade"
 
 interface IBody extends Omit<ICidade, 'id'>{}
 interface IParams{
@@ -19,13 +20,23 @@ export const updateValidation = validation((getSchema) => ({
 }))
 
 export const update = async (req: Request<IParams, {}, IBody>, res: Response) => { 
-    console.log(req.body)
-    console.log(req.params)
-    if(Number(req.params.id) == 9999) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        errors: {
-            "default": "Registro não encontrado!"
-        }
-    })
+    if(!req.params.id) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            errors: {
+                "default": "O parâmetro 'id' precisa ser informado!"
+            }
+        })
+    }
 
-    return res.status(StatusCodes.NO_CONTENT).send()
+    const result = await CidadesProvider.update(req.params.id, req.body)
+
+    if(result instanceof Error){
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
+
+    return res.status(StatusCodes.NO_CONTENT).json(result)
 }
