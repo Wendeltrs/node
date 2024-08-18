@@ -2,19 +2,19 @@ import { Request, Response } from "express"
 import * as yup from 'yup'
 import { validation } from "../../shared/middlewares/validation"
 import { StatusCodes } from "http-status-codes"
-import { CidadesProvider } from "../../database/providers/cidade"
+import { PessoasProvider } from "../../database/providers/pessoa"
 
 interface IParams{
     id?: number
 }
 
-export const getByIdValidation = validation((getSchema) => ({
+export const deleteIdValidation = validation((getSchema) => ({
     params: getSchema<IParams>(yup.object().shape({
         id: yup.number().integer().moreThan(0)
     }))
 }))
 
-export const getById = async (req: Request<IParams>, res: Response) => { 
+export const deleteId = async (req: Request<IParams>, res: Response) => {
     if(!req.params.id) {
         return res.status(StatusCodes.BAD_REQUEST).json({
             errors: {
@@ -23,7 +23,7 @@ export const getById = async (req: Request<IParams>, res: Response) => {
         })
     }
 
-    const result = await CidadesProvider.getId(req.params.id)
+    const result = await PessoasProvider.deleteId(req.params.id)
 
     if(result instanceof Error){
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -33,5 +33,5 @@ export const getById = async (req: Request<IParams>, res: Response) => {
         })
     }
 
-    return res.status(StatusCodes.OK).json(result)
+    return res.status(StatusCodes.NO_CONTENT).send()
 }

@@ -12,9 +12,9 @@ export const create = async (cidade: Omit<ICidade, 'id'>): Promise<number | Erro
             return result
         }
 
-        return new Error('Errro ao cadastrar cidade')        
+        return new Error('Errro ao cadastrar o registro')        
     } catch (error) {
         console.log(error)
-        return new Error('Erro ao cadastrar cidade')
+        return new Error('Erro ao cadastrar o registro')
     }
 }

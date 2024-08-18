@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import * as yup from 'yup'
 import { validation } from "../../shared/middlewares/validation"
 import { StatusCodes } from "http-status-codes"
-import { CidadesProvider } from "../../database/providers/cidade"
+import { PessoasProvider } from "../../database/providers/pessoa"
 
 interface IParams{
     id?: number
@@ -23,7 +23,7 @@ export const getById = async (req: Request<IParams>, res: Response) => {
         })
     }
 
-    const result = await CidadesProvider.getId(req.params.id)
+    const result = await PessoasProvider.getId(req.params.id)
 
     if(result instanceof Error){
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

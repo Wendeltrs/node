@@ -23,6 +23,6 @@ export const getAll = async (id = 0, limit: number, page: number, filter: string
         return result       
     } catch (error) {
         console.log(error)
-        return new Error('Erro ao cadastrar cidade')
+        return new Error('Erro ao consultar os registros')
     }
 } 

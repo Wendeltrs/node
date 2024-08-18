@@ -2,10 +2,9 @@ import { Request, Response } from "express"
 import * as yup from 'yup'
 import { validation } from "../../shared/middlewares/validation"
 import { StatusCodes } from "http-status-codes"
-import { CidadesProvider } from "../../database/providers/cidade"
+import { PessoasProvider } from "../../database/providers/pessoa"
 
 interface IQuery{
-    id?: number
     page?: number
     limit?: number
     filter?: string
@@ -13,7 +12,6 @@ interface IQuery{
 
 export const getAllValidation = validation((getSchema) => ({
     query: getSchema<IQuery>(yup.object().shape({
-        id: yup.number().integer().default(0), 
         page: yup.number().integer().moreThan(0).default(1),
         limit: yup.number().moreThan(0).default(7),
         filter: yup.string().default('')
@@ -22,8 +20,8 @@ export const getAllValidation = validation((getSchema) => ({
 
 export const getAll = async (req: Request<{}, {}, {}, IQuery>, res: Response) => { //Criando o controller de cidades
     //console.log(req.query) //req.body: Pega os dados passados no body do front-end
-    const result = await CidadesProvider.getAll(Number(req.query.id), req.query.limit || 7, req.query.page || 1, req.query.filter || '')
-    const count = await CidadesProvider.count(req.query.filter)
+    const result = await PessoasProvider.getAll(req.query.limit || 7, req.query.page || 1, req.query.filter || '')
+    const count = await PessoasProvider.count(req.query.filter)
 
     if(result instanceof Error){
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

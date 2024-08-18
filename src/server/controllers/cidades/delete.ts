@@ -9,7 +9,7 @@ interface IParams{
 }
 
 export const deleteIdValidation = validation((getSchema) => ({
-    body: getSchema<IParams>(yup.object().shape({
+    params: getSchema<IParams>(yup.object().shape({
         id: yup.number().integer().moreThan(0)
     }))
 }))
@@ -18,7 +18,7 @@ export const deleteId = async (req: Request<IParams>, res: Response) => {
     if(!req.params.id) {
         return res.status(StatusCodes.BAD_REQUEST).json({
             errors: {
-                "default": "O parâmetro 'id' precisa ser informado!"
+                default: "O parâmetro 'id' precisa ser informado!"
             }
         })
     }
