@@ -19,6 +19,6 @@ export async function down(knex: Knex){ //Desfaz o que o up fez
         .schema
         .dropTable(ETableNames.cidade)
         .then(() => {
-            console.log(`# Created table ${ETableNames.cidade}`)
+            console.log(`# Dropped table ${ETableNames.cidade}`)
         })
 }
