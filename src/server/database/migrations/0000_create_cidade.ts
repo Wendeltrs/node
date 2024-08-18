@@ -4,8 +4,8 @@ import { ETableNames } from "../eTableNames";
 export async function up(knex: Knex){
     return knex
         .schema
-        .createTable(ETableNames.cidade, table => {
-            table.bigIncrements('id').primary().index() //Autoincrement e chave primária 
+        .createTable(ETableNames.cidade, table => { //Cria a tabela
+            table.bigIncrements('id').primary().index() //bigIncrements <==> AutoIncrement 
             table.string('nome', 150).notNullable().index()
             table.comment('Tabela usada para armazenar cidades do sistema.')
         })
